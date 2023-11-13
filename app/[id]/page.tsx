@@ -65,10 +65,6 @@ export default function Index({ params }: { params: { id: string } }) {
     return false;
   });
   
-  
-  
-  
-  
     // ถ้าข้อมูลอยู่ใน data ให้แสดง Alert
     if (isDataExist) {
       window.alert('ข้อมูลมีอยู่แล้ว');
