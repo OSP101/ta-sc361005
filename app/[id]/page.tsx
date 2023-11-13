@@ -10,7 +10,11 @@ export default function Index({ params }: { params: { id: string } }) {
   const [score, setScore] = useState('1');
   const [lab, setLabid] = useState(params.id);
   const [dataToSubmit, setDataToSubmit] = useState([]);
-  const [data, setData] = useState(null);
+
+
+  const [data, setData] = useState([]);
+
+
   const [isLoaded, setIsLoaded] = React.useState(false);
 
   const [load , setLoad] = useState(false);
@@ -53,19 +57,15 @@ export default function Index({ params }: { params: { id: string } }) {
     };
   
   // ตรวจสอบว่าข้อมูลที่จะ submit อยู่ใน data หรือไม่
-  let isDataExist = false;
-  if (data && Array.isArray(data)) {
-    for (let i = 0; i < data.length; i++) {
-      const item = data[i];
-      if (
-        item.lab === lab &&
-        item.stdid === stdid
-      ) {
-        isDataExist = true;
-        break;
-      }
+  const isDataExist = data?.some((item) => {
+    if (item) {
+      return item.lab === lab && item.stdid === stdid;
     }
-  }
+  
+    return false;
+  });
+  
+  
   
   
   
