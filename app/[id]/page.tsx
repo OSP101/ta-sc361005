@@ -55,15 +55,18 @@ export default function Index({ params }: { params: { id: string } }) {
       stdid,
       score
     };
+
+    
   
   // ตรวจสอบว่าข้อมูลที่จะ submit อยู่ใน data หรือไม่
-  const isDataExist = data?.some((item) => {
+  const isDataExist = data?.some((item: { lab: string; stdid: string }) => {
     if (item) {
       return item.lab === lab && item.stdid === stdid;
     }
   
     return false;
   });
+  
   
     // ถ้าข้อมูลอยู่ใน data ให้แสดง Alert
     if (isDataExist) {
@@ -93,18 +96,16 @@ export default function Index({ params }: { params: { id: string } }) {
   const editData = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoad(true)
-    let isDataExist = false;
   
     // ตรวจสอบว่าข้อมูลอยู่ใน data หรือไม่
-    if (data) {
-      for (let i = 0; i < data.length; i++) {
-        const item = data[i];
-        if (item.lab === lab && item.stdid === stdid) {
-          isDataExist = true;
-          break;
+    const isDataExist = data?.some((item: { lab: string; stdid: string }) => {
+        if (item) {
+          return item.lab === lab && item.stdid === stdid;
         }
-      }
-    }
+      
+        return false;
+      });
+      
   
     // ถ้าข้อมูลไม่อยู่ใน data ให้แสดง Alert
     if (isDataExist) {
