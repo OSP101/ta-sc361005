@@ -2,22 +2,19 @@
 import { useEffect, useState } from 'react';
 import React from 'react';
 import { useRouter } from 'next/router';
-import { Input, RadioGroup, Radio, Button, Breadcrumbs, BreadcrumbItem, Card, CardBody, CardHeader, Divider,Tabs, Tab,Skeleton } from "@nextui-org/react";
+import { Input, RadioGroup, Radio, Button, Breadcrumbs, BreadcrumbItem, Card, CardBody, CardHeader, Divider, Tabs, Tab, Skeleton } from "@nextui-org/react";
 import axios from 'axios';
+import {Link} from "@nextui-org/react";
+
 
 export default function Index({ params }: { params: { id: string } }) {
   const [stdid, setStdid] = useState('');
   const [score, setScore] = useState('1');
   const [lab, setLabid] = useState(params.id);
   const [dataToSubmit, setDataToSubmit] = useState([]);
-
-
   const [data, setData] = useState([]);
-
-
   const [isLoaded, setIsLoaded] = React.useState(false);
-
-  const [load , setLoad] = useState(false);
+  const [load, setLoad] = useState(false);
   const toggleLoad = () => {
     setLoad(true);
   };
@@ -26,8 +23,8 @@ export default function Index({ params }: { params: { id: string } }) {
     setIsLoaded(false); // Set loading state before fetching data
     getData();
   }, []);
-  
-  const getData = () =>{
+
+  const getData = () => {
     axios.get('https://sheet.best/api/sheets/c25a43ff-8e51-4050-b0c8-0c2a3e3a6690')
       .then(res => {
         setData(res.data);
@@ -38,15 +35,15 @@ export default function Index({ params }: { params: { id: string } }) {
         setIsLoaded(true); // Set loading state after an error
       });
   }
-  
 
-  if(!data){
-    return <div/>
+
+  if (!data) {
+    return <div />
   }
 
   const submitData = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-  
+
     const currentDate = new Date();
     setLoad(true)
     const scoreData = {
@@ -56,26 +53,30 @@ export default function Index({ params }: { params: { id: string } }) {
       score
     };
 
-    
-  
-  // ตรวจสอบว่าข้อมูลที่จะ submit อยู่ใน data หรือไม่
-  const isDataExist = data?.some((item: { lab: string; stdid: string }) => {
-    if (item) {
-      return item.lab === lab && item.stdid === stdid;
-    }
-  
-    return false;
-  });
-  
-  
+
+
+    // ตรวจสอบว่าข้อมูลที่จะ submit อยู่ใน data หรือไม่
+    const isDataExist = data?.some((item: { lab: string; stdid: string }) => {
+      if (item) {
+        return item.lab === lab && item.stdid === stdid;
+      }
+
+      return false;
+    });
+
+
     // ถ้าข้อมูลอยู่ใน data ให้แสดง Alert
     if (isDataExist) {
+      setLoad(false);
       window.alert('ข้อมูลมีอยู่แล้ว');
+      
     }
-    else if(stdid == "" && lab == ""){
+    else if (stdid == "" && lab == "") {
+      
+      setLoad(false);
       window.alert('กรอกข้อมูลไม่ครบ');
     }
-    
+
     else {
       axios.post('https://sheet.best/api/sheets/c25a43ff-8e51-4050-b0c8-0c2a3e3a6690', scoreData)
         .then(res => {
@@ -89,34 +90,33 @@ export default function Index({ params }: { params: { id: string } }) {
           console.error(err);
         });
     }
-
   }
-
 
   const editData = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoad(true)
-  
+
     // ตรวจสอบว่าข้อมูลอยู่ใน data หรือไม่
     const isDataExist = data?.some((item: { lab: string; stdid: string }) => {
-        if (item) {
-          return item.lab === lab && item.stdid === stdid;
-        }
-      
-        return false;
-      });
-      
-  
+      if (item) {
+        return item.lab === lab && item.stdid === stdid;
+      }
+      return false;
+    });
+
     // ถ้าข้อมูลไม่อยู่ใน data ให้แสดง Alert
     if (isDataExist) {
+      setLoad(false);
       const upscoreData = {
         score
       };
-  
+
       if (stdid === "" || lab === "") {
-        window.alert('กรอกข้อมูลไม่ครบ');
+                setLoad(false);
+                window.alert('กรอกข้อมูลไม่ครบ');
+
       } else {
-console.log(stdid,lab,upscoreData)
+        console.log(stdid, lab, upscoreData)
 
         axios.patch(`https://sheet.best/api/sheets/c25a43ff-8e51-4050-b0c8-0c2a3e3a6690/search?stdid=${stdid}&lab=${lab}`, upscoreData)
           .then(res => {
@@ -130,10 +130,17 @@ console.log(stdid,lab,upscoreData)
           });
       }
     } else {
+      setLoad(false);
       window.alert('ไม่มีข้อมูลที่ต้องการแก้ไข');
+
     }
   };
-  
+
+
+  const modal = () => {
+
+  }
+
 
   return (
     <div className='container'>
@@ -142,17 +149,20 @@ console.log(stdid,lab,upscoreData)
         <BreadcrumbItem>Laboratory: {params.id}</BreadcrumbItem>
       </Breadcrumbs> <br />
       <Divider />
-      <Tabs aria-label="Options" color='secondary' variant='bordered' className='mt-4 mb-4 flex justify-center' disabledKeys={["videos"]}>
-        <Tab key="photos" title="เพิ่มคะแนน" className='flex justify-center'>
-          <Card className="p-4 w-1/2 flex justify-center">
+
+      <div className="flex w-full justify-center">
+      <Card className="p-4 w-1/4 flex justify-center mt-7">
+        <CardBody className="overflow-hidden">
+      <Tabs aria-label="Options" color='secondary' variant='bordered' fullWidth size="lg" className='' disabledKeys={["videos"]}>
+        <Tab key="photos" title="เพิ่มคะแนน">
+          <br />
             <Skeleton isLoaded={isLoaded}>
-              <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
                 <h1 className="font-bold text-2xl">เพิ่มคะแนน</h1>
                 <p className="text-small text-default-500">Laboratory: {params.id}</p>
-              </CardHeader>
-              <br /><Divider /><br />
-              <form onSubmit={submitData}>
-                <CardBody>
+            </Skeleton>
+            <br /><Divider /><br />
+            <form onSubmit={submitData}>
+                <Skeleton isLoaded={isLoaded}>
                   <Input
                     isRequired
                     type="text"
@@ -162,9 +172,12 @@ console.log(stdid,lab,upscoreData)
                     value={stdid}
                     onChange={(e) => setStdid(e.target.value)}
                   />
-                  <br />
+                </Skeleton>
+                <br />
+                <Skeleton isLoaded={isLoaded}>
                   <RadioGroup
                     label="Score"
+                    color='secondary'
                     orientation="horizontal"
                     value={score}
                     onChange={(e) => setScore(e.target.value)}
@@ -175,34 +188,33 @@ console.log(stdid,lab,upscoreData)
                     <Radio value="0.25">0.25</Radio>
                     <Radio value="0">0</Radio>
                   </RadioGroup>
-                  <br /><br />
+                </Skeleton>
+                <br /><br />
+                <div>
+                <Skeleton isLoaded={isLoaded}>
                   <Button
-  color="success"
-  variant="ghost"
-  className='max-w-xs'
-  type='submit'
-  // onClick={toggleLoad}
-  disabled={load}
-  isLoading={load}
->
-  {load ? "Loading..." : "Save"}
-</Button>
-
-                </CardBody>
-              </form>
-            </Skeleton>
-          </Card>
+                  fullWidth
+                    color="success"
+                    variant="ghost"
+                    className='max-w-xs'
+                    type='submit'
+                    // onClick={toggleLoad}
+                    disabled={load}
+                    isLoading={load}
+                  >
+                    {load ? "Loading..." : "Save"}
+                  </Button>
+                </Skeleton>
+                </div>
+            </form>
         </Tab>
-        <Tab key="music" title="แก้ไขคะแนน" className='flex justify-center'>
-          <Card className="p-4 w-1/2 flex justify-center">
+        <Tab key="music" title="แก้ไขคะแนน">
             <Skeleton isLoaded={isLoaded}>
-              <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
+              <br />
                 <h1 className="font-bold text-2xl">แก้ไขคะแนน</h1>
                 <p className="text-small text-default-500">Laboratory: {params.id}</p>
-              </CardHeader>
               <br /><Divider /><br />
               <form onSubmit={editData}>
-                <CardBody>
                   <Input
                     isRequired
                     type="text"
@@ -227,22 +239,19 @@ console.log(stdid,lab,upscoreData)
                   </RadioGroup>
                   <br /><br />
                   <Button
-  color="warning"
-  variant="ghost"
-  className='max-w-xs'
-  type='submit'
-  // onClick={toggleLoad}
-  disabled={load}
-  isLoading={load}
->
-  {load ? "Loading..." : "Edit"}
-</Button>
-
-
-                </CardBody>
+                  fullWidth
+                    color="warning"
+                    variant="ghost"
+                    className='max-w-xs'
+                    type='submit'
+                    // onClick={toggleLoad}
+                    disabled={load}
+                    isLoading={load}
+                  >
+                    {load ? "Loading..." : "Edit"}
+                  </Button>
               </form>
             </Skeleton>
-          </Card>
         </Tab>
         <Tab key="videos" title="ลบคะแนน">
           <Card>
@@ -252,7 +261,11 @@ console.log(stdid,lab,upscoreData)
           </Card>
         </Tab>
       </Tabs>
-    </div>  
+      </CardBody>
+      </Card>
+    </div>
+    <p className="text-small text-default-500 text-center mt-4">Copyright © 2023 <Link isExternal showAnchorIcon href='https://www.facebook.com/groups/sc361005' >SC361005</Link></p>
+    </div>
   );
-  
+
 }
