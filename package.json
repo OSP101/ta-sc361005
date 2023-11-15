@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@nextui-org/modal": "^2.0.28",
     "@nextui-org/react": "^2.2.9",
     "axios": "^1.6.1",
     "framer-motion": "^10.16.4",

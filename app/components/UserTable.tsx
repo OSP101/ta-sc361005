@@ -33,7 +33,7 @@ export default function UserTable({ users }: { users: User[] }) {
     return filteredUsers
   }, [users, filterValue, hasSearchFilter])
 
-  const rowsPerPage = 8
+  const rowsPerPage = 6
   const [page, setPage] = useState(1)
   const pages = Math.ceil(filteredItems.length / rowsPerPage)
 

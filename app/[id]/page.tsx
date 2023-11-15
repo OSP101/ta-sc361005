@@ -2,9 +2,15 @@
 import { useEffect, useState } from 'react';
 import React from 'react';
 import { useRouter } from 'next/router';
-import { Input, RadioGroup, Radio, Button, Breadcrumbs, BreadcrumbItem, Card, CardBody, CardHeader, Divider, Tabs, Tab, Skeleton } from "@nextui-org/react";
+import { Input, RadioGroup, Radio, Button, Breadcrumbs, BreadcrumbItem, Card, CardBody, CardHeader, Divider, Tabs, Tab, Skeleton,   Modal, 
+  ModalContent, 
+  ModalHeader, 
+  ModalBody, 
+  ModalFooter, 
+  useDisclosure} from "@nextui-org/react";
 import axios from 'axios';
 import {Link} from "@nextui-org/react";
+import Alert from "../components/alert";
 
 
 export default function Index({ params }: { params: { id: string } }) {
@@ -15,9 +21,15 @@ export default function Index({ params }: { params: { id: string } }) {
   const [data, setData] = useState([]);
   const [isLoaded, setIsLoaded] = React.useState(false);
   const [load, setLoad] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  
+  const {isOpen, onOpen, onOpenChange} = useDisclosure();
+
+
   const toggleLoad = () => {
     setLoad(true);
   };
+
 
   useEffect(() => {
     setIsLoaded(false); // Set loading state before fetching data
@@ -85,6 +97,7 @@ export default function Index({ params }: { params: { id: string } }) {
           setStdid('');
           getData()
           setLoad(false);
+    onOpen();
         })
         .catch(err => {
           console.error(err);
@@ -123,7 +136,8 @@ export default function Index({ params }: { params: { id: string } }) {
             console.log(res);
             setScore('1');
             setStdid('');
-            setLoad(false);
+    onOpen();
+    setLoad(false);
           })
           .catch(err => {
             console.error(err);
@@ -151,7 +165,7 @@ export default function Index({ params }: { params: { id: string } }) {
       <Divider />
 
       <div className="flex w-full justify-center">
-      <Card className="p-4 w-1/4 flex justify-center mt-7">
+      <Card className="p-4 flex justify-center mt-7">
         <CardBody className="overflow-hidden">
       <Tabs aria-label="Options" color='secondary' variant='bordered' fullWidth size="lg" className='' disabledKeys={["videos"]}>
         <Tab key="photos" title="เพิ่มคะแนน">
@@ -203,7 +217,9 @@ export default function Index({ params }: { params: { id: string } }) {
                     isLoading={load}
                   >
                     {load ? "Loading..." : "Save"}
+
                   </Button>
+                  {isSuccess && <Alert />}
                 </Skeleton>
                 </div>
             </form>
@@ -265,6 +281,29 @@ export default function Index({ params }: { params: { id: string } }) {
       </Card>
     </div>
     <p className="text-small text-default-500 text-center mt-4">Copyright © 2023 <Link isExternal showAnchorIcon href='https://www.facebook.com/groups/sc361005' >SC361005</Link></p>
+
+      <Modal isOpen={isOpen} backdrop='blur' onOpenChange={onOpenChange}>
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">Success!!</ModalHeader>
+              <ModalBody>
+                  <p>{ }</p>
+              </ModalBody>
+              <ModalFooter>
+                <Button color="success" variant="ghost" onPress={onClose} fullWidth>
+                  Close
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+    
+    
+    
+    
+    
     </div>
   );
 
