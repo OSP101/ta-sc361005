@@ -6,7 +6,6 @@ import Providers from './providers'
 import ThemeSwitcher from './components/ThemeSwitcher'
 import {Button,Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Avatar} from "@nextui-org/react";
 import {Popover, PopoverTrigger, PopoverContent,User, ButtonGroup} from "@nextui-org/react";
-import { useSession, signIn, signOut } from "next-auth/react"
 
 
 
@@ -23,7 +22,6 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
 
-const { data: session } = useSession()
 
   return (
     <html lang='en'>
@@ -42,15 +40,15 @@ const { data: session } = useSession()
 
       <Popover showArrow placement="bottom">
       <PopoverTrigger>
-        {/* <User   
+        <User   
           as="button"
           name="Zoe Lang"
           description="Product Designer"
           className="transition-transform"
           avatarProps={{
-            color:"danger" ,src:`${session?.user?.image}`
+            color:"danger" ,src:``
           }}
-        /> */}
+        />
       </PopoverTrigger>
       <PopoverContent className="p-1">
       <Button color="primary" variant="bordered">
