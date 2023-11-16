@@ -28,16 +28,14 @@ export default function RootLayout({
       <body className={inter.className}>
         <Providers>
           <header className='py-6'>    
-            <Navbar maxWidth='2xl'>
-            <NavbarBrand>
-            <ul>
+          <nav className='container flex items-center justify-between'>
+              <ul>
                 <li>
-                  <Link href='/' color="secondary" size="lg">SC361005 Introduction to Computer Organization and Architecture</Link>
+                  <Link href='/'>SC361005/2566 Introduction to Computer Organization and Architecture</Link>
                 </li>
               </ul>
-            </NavbarBrand>
               <ThemeSwitcher />
-            </Navbar>
+            </nav>
           </header>
           <main>{children}</main>
           <footer></footer>
