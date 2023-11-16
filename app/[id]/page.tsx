@@ -14,7 +14,7 @@ import Alert from "../components/alert";
 
 
 export default function Index({ params }: { params: { id: string } }) {
-  const [stdid, setStdid] = useState('');
+  const [std, setStdid] = useState('');
   const [score, setScore] = useState('1');
   const [lab, setLabid] = useState(params.id);
   const [dataToSubmit, setDataToSubmit] = useState([]);
@@ -57,6 +57,10 @@ export default function Index({ params }: { params: { id: string } }) {
     e.preventDefault();
 
     const currentDate = new Date();
+
+    const inputString: string = std;
+const stdid: string = inputString.replace("-", "");
+    console.log(stdid);
     setLoad(true)
     const scoreData = {
       currentDate,
@@ -111,27 +115,30 @@ export default function Index({ params }: { params: { id: string } }) {
 
     // ตรวจสอบว่าข้อมูลอยู่ใน data หรือไม่
     const isDataExist = data?.some((item: { lab: string; stdid: string }) => {
+      const inputString: string = std;
+      const stdidnew: string = inputString.replace("-", "");
+          console.log(stdidnew);
       if (item) {
-        return item.lab === lab && item.stdid === stdid;
+        return item.lab === lab && item.stdid === stdidnew;
       }
       return false;
     });
 
     // ถ้าข้อมูลไม่อยู่ใน data ให้แสดง Alert
     if (isDataExist) {
-      setLoad(false);
       const upscoreData = {
         score
       };
 
-      if (stdid === "" || lab === "") {
+      if (std === "" || lab === "") {
                 setLoad(false);
                 window.alert('กรอกข้อมูลไม่ครบ');
 
       } else {
-        console.log(stdid, lab, upscoreData)
-
-        axios.patch(`https://sheet.best/api/sheets/c25a43ff-8e51-4050-b0c8-0c2a3e3a6690/search?stdid=${stdid}&lab=${lab}`, upscoreData)
+        console.log(std, lab, upscoreData)
+        const inputString: string = std;
+        const stdidnew: string = inputString.replace("-", "");
+        axios.patch(`https://sheet.best/api/sheets/c25a43ff-8e51-4050-b0c8-0c2a3e3a6690/search?stdid=${stdidnew}&lab=${lab}`, upscoreData)
           .then(res => {
             console.log(res);
             setScore('1');
@@ -182,8 +189,8 @@ export default function Index({ params }: { params: { id: string } }) {
                     type="text"
                     label="StudentID"
                     className="max-w-xs"
-                    name={stdid}
-                    value={stdid}
+                    name={std}
+                    value={std}
                     onChange={(e) => setStdid(e.target.value)}
                   />
                 </Skeleton>
@@ -236,8 +243,8 @@ export default function Index({ params }: { params: { id: string } }) {
                     type="text"
                     label="StudentID"
                     className="max-w-xs"
-                    name={stdid}
-                    value={stdid}
+                    name={std}
+                    value={std}
                     onChange={(e) => setStdid(e.target.value)}
                   />
                   <br />
@@ -254,6 +261,7 @@ export default function Index({ params }: { params: { id: string } }) {
                     <Radio value="0">0</Radio>
                   </RadioGroup>
                   <br /><br />
+                  <Skeleton isLoaded={isLoaded}>
                   <Button
                   fullWidth
                     color="warning"
@@ -266,6 +274,7 @@ export default function Index({ params }: { params: { id: string } }) {
                   >
                     {load ? "Loading..." : "Edit"}
                   </Button>
+                  </Skeleton>
               </form>
             </Skeleton>
         </Tab>
