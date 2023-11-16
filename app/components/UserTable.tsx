@@ -80,7 +80,7 @@ export default function UserTable({ users }: { users: User[] }) {
           <Input
             isClearable
             className='w-full sm:max-w-[44%]'
-            placeholder='Search by name...'
+            placeholder='Search by laboratory...'
             startContent={<SearchIcon />}
             value={filterValue}
             onClear={() => onClear()}

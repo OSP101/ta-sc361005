@@ -1,8 +1,13 @@
 import React from 'react'
 import { Button, Dropdown,  DropdownTrigger,  DropdownMenu,  DropdownSection,  DropdownItem} from "@nextui-org/react";
 import {Popover, PopoverTrigger, PopoverContent,Avatar,User, ButtonGroup} from "@nextui-org/react";
+import { useSession, signIn, signOut } from "next-auth/react"
+
 
 function Test() {
+  // const { data: session } = useSession()
+  // console.log(session?.user?.email)
+
   return (
     <div>
     <Popover showArrow placement="bottom">

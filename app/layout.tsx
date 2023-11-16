@@ -32,31 +32,10 @@ export default function RootLayout({
             <NavbarBrand>
             <ul>
                 <li>
-                  <Link href='/' color="secondary" size="lg">SC361005 ComArc</Link>
+                  <Link href='/' color="secondary" size="lg">SC361005 Introduction to Computer Organization and Architecture</Link>
                 </li>
               </ul>
             </NavbarBrand>
-
-
-      <Popover showArrow placement="bottom">
-      <PopoverTrigger>
-        <User   
-          as="button"
-          name="Zoe Lang"
-          description="Product Designer"
-          className="transition-transform"
-          avatarProps={{
-            color:"danger" ,src:``
-          }}
-        />
-      </PopoverTrigger>
-      <PopoverContent className="p-1">
-      <Button color="primary" variant="bordered">
-        Bordered
-      </Button> 
-      </PopoverContent>
-    </Popover>
-
               <ThemeSwitcher />
             </Navbar>
           </header>
